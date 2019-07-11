@@ -8,11 +8,19 @@ resource "aws_instance" "example" {
   ami           = "ami-a1ccd8c3"
   instance_type = "t2.micro"
 
-  tags {
+  tags = {
     Name = "example"
   }
   provisioner "local-exec" {
     command = "echo ${aws_instance.example.public_ip} > ip_address.txt"
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket = "kubernetes-cluster-info-for-terraform"
+    key    = "demo"
+    region = "cn-northwest-1"
   }
 }
 
